@@ -1,0 +1,1 @@
+# EduFrame-SE2030-B4G1-06
