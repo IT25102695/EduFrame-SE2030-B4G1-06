@@ -160,4 +160,9 @@ public class PageController {
     public String login() {
         return "login";
     }
+
+    @GetMapping("/support")
+    public String support() {
+        return "support";
+    }
 }

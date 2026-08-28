@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initLoginToggle();
     initMockUpload();
     initMockSearch();
+    initSupportModal();
 });
 
 /**
@@ -248,3 +249,47 @@ function escapeHtml(str) {
               .replace(/"/g, "&quot;")
               .replace(/'/g, "&#039;");
 }
+
+/**
+ * 6. SUPPORT TICKET MODAL CONTROLLER (UC-05)
+ * Dynamically mounts the React SupportTicketComponent inside modal overlay when triggered.
+ */
+function initSupportModal() {
+    const openBtn = document.getElementById('openSupportModalBtn');
+    const backdrop = document.getElementById('supportModalBackdrop');
+    const modalRoot = document.getElementById('support-modal-root');
+
+    if (!openBtn || !backdrop || !modalRoot) return;
+
+    let rootInstance = null;
+
+    const closeModal = () => {
+        backdrop.style.display = 'none';
+        document.body.style.overflow = '';
+    };
+
+    openBtn.addEventListener('click', () => {
+        backdrop.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+
+        if (window.ReactDOM && window.SupportTicketComponent) {
+            if (!rootInstance) {
+                rootInstance = ReactDOM.createRoot(modalRoot);
+            }
+            rootInstance.render(
+                React.createElement(window.SupportTicketComponent, {
+                    isModal: true,
+                    onClose: closeModal
+                })
+            );
+        }
+    });
+
+    // Close on backdrop click
+    backdrop.addEventListener('click', (e) => {
+        if (e.target === backdrop) {
+            closeModal();
+        }
+    });
+}
+

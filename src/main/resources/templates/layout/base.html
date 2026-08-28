@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title th:text="${title} + ' - EduFrame SLIIT'">EduFrame</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}">
+    
+    <!-- React 18 & Babel Standalone CDNs for UC-05 Support Ticket UI -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 </head>
 <body>
 
@@ -40,6 +45,13 @@
                 <div class="nav-item" th:classappend="${activeTab == 'upload' ? 'active' : ''}">
                     <a th:href="@{/upload}" class="nav-link">Lecturer Panel</a>
                 </div>
+
+                <div class="nav-item" th:classappend="${activeTab == 'support' ? 'active' : ''}">
+                    <a th:href="@{/support}" class="nav-link">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-right: 4px; vertical-align: text-bottom;"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                        Help Desk
+                    </a>
+                </div>
             </nav>
             
             <div class="header-utils">
@@ -59,6 +71,23 @@
     <main class="container">
         <p>Main content goes here.</p>
     </main>
+
+    <!-- Global Floating Support Ticket Action Button (UC-05 Modal Trigger) -->
+    <div id="floating-support-widget">
+        <button id="openSupportModalBtn" class="floating-support-btn" title="Submit Support Ticket (UC-05)">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+            </svg>
+            <span>Submit Ticket</span>
+        </button>
+    </div>
+
+    <!-- Support Modal Overlay Backdrop -->
+    <div id="supportModalBackdrop" class="support-modal-backdrop" style="display: none;">
+        <div class="support-modal-wrapper animate-fade">
+            <div id="support-modal-root"></div>
+        </div>
+    </div>
 
     <!-- 2. SLIIT-Style Footer (Fragment) -->
     <footer th:fragment="footer">
@@ -92,6 +121,7 @@
                         <li><a th:href="@{/browse(category='Engineering')}">Faculty of Engineering</a></li>
                         <li><a th:href="@{/browse(category='Business')}">School of Business</a></li>
                         <li><a th:href="@{/upload}">Lecturer Console</a></li>
+                        <li><a th:href="@{/support}">Support Portal (UC-05)</a></li>
                     </ul>
                 </div>
                 
@@ -101,6 +131,7 @@
                         <li><a href="https://courseweb.sliit.lk" target="_blank">SLIIT Courseweb</a></li>
                         <li><a href="https://sam.sliit.lk" target="_blank">SAM Student Portal</a></li>
                         <li><a href="https://library.sliit.lk" target="_blank">SLIIT Library</a></li>
+                        <li><a th:href="@{/support}">Submit Support Ticket</a></li>
                         <li><a th:href="@{/login}">EduFrame Login</a></li>
                     </ul>
                 </div>
@@ -134,6 +165,8 @@
     <!-- Standard Scripts (Fragment) -->
     <div th:fragment="scripts">
         <script th:src="@{/js/main.js}"></script>
+        <!-- Load React Support Ticket Component via Babel -->
+        <script type="text/babel" th:src="@{/js/components/support-ticket.js}"></script>
     </div>
 
 </body>
