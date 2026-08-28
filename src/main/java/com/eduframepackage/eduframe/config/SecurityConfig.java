@@ -14,9 +14,10 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests(authorize -> authorize
-                .requestMatchers("/", "/browse", "/play", "/play/**", "/upload", "/login", "/css/**", "/js/**", "/images/**").permitAll()
+                .requestMatchers("/", "/browse", "/play", "/play/**", "/upload", "/login", "/support", "/api/tickets/**", "/h2-console/**", "/css/**", "/js/**", "/images/**").permitAll()
                 .anyRequest().authenticated()
             )
+            .headers(headers -> headers.frameOptions(frame -> frame.disable()))
             .formLogin(form -> form
                 .loginPage("/login")
                 .defaultSuccessUrl("/", true)
@@ -26,7 +27,7 @@ public class SecurityConfig {
                 .logoutSuccessUrl("/")
                 .permitAll()
             )
-            .csrf(csrf -> csrf.disable()); // Disabled to facilitate simple mock forms in frontend prototype
+            .csrf(csrf -> csrf.disable()); // Disabled to facilitate API & prototype forms
 
         return http.build();
     }
